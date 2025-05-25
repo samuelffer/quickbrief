@@ -5,7 +5,7 @@
 
 // AVWX API Configuration
 const AVWX_API_BASE_URL = 'https://avwx.rest/api';
-const AVWX_API_KEY = 'YOUR_API_KEY_HERE'; // This would be replaced with a real API key in production
+const AVWX_API_KEY = '15u2Ud5P6qEz5_hUmun77nQa4StnbunffOJt1O1G4zE'; // This would be replaced with a real API key in production
 
 // DOM Elements
 const icaoInput = document.getElementById('icaoInput');
