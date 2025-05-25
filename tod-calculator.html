@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOD Calculator - QuickBrief</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-plane"></i>
+                    <span>QuickBrief</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="sidebar-menu-item">
+                    <i class="fas fa-home"></i>
+                    <span data-i18n="nav.home">Home</span>
+                </a>
+                <a href="briefing-extractor.html" class="sidebar-menu-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span data-i18n="nav.briefingExtractor">Briefing Extractor</span>
+                </a>
+                <a href="weather.html" class="sidebar-menu-item">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span data-i18n="nav.weather">Weather</span>
+                </a>
+                <a href="tod-calculator.html" class="sidebar-menu-item active">
+                    <i class="fas fa-plane-arrival"></i>
+                    <span data-i18n="nav.todCalculator">TOD Calculator</span>
+                </a>
+                <a href="wind-calculator.html" class="sidebar-menu-item">
+                    <i class="fas fa-wind"></i>
+                    <span data-i18n="nav.windCalculator">Wind Calculator</span>
+                </a>
+                <a href="fuel-calculator.html" class="sidebar-menu-item">
+                    <i class="fas fa-gas-pump"></i>
+                    <span data-i18n="nav.fuelCalculator">Fuel Calculator</span>
+                </a>
+                <a href="about.html" class="sidebar-menu-item">
+                    <i class="fas fa-info-circle"></i>
+                    <span data-i18n="nav.about">About</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="language-selector" id="languageSelector">
+                    <i class="fas fa-globe"></i>
+                    <span id="currentLanguage">EN</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title" data-i18n="todCalculator.title">Top of Descent Calculator</h1>
+                <div class="main-header-actions">
+                    <a href="https://github.com/samuelffer" target="_blank" class="github-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </header>
+            
+            <div class="content-area animate-fade-in">
+                <div class="row">
+                    <div class="col-6 animate-slide-left">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-calculator"></i>
+                                <h2 data-i18n="todCalculator.title">Top of Descent Calculator</h2>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-3" data-i18n="todCalculator.description">
+                                    Calculate your optimal Top of Descent (TOD) point to plan a smooth, efficient descent to your destination. This calculator uses standard aviation rules of thumb to determine when to begin your descent.
+                                </p>
+                                
+                                <form id="todForm">
+                                    <div class="form-group">
+                                        <label for="cruiseAltitude" data-i18n="todCalculator.cruiseAltitude">Cruise Altitude (ft)</label>
+                                        <input type="number" id="cruiseAltitude" class="form-control" value="36000" min="1000" max="60000" step="1000" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="targetAltitude" data-i18n="todCalculator.targetAltitude">Target Altitude (ft)</label>
+                                        <input type="number" id="targetAltitude" class="form-control" value="10000" min="0" max="50000" step="1000" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="groundSpeed" data-i18n="todCalculator.groundSpeed">Ground Speed (knots)</label>
+                                        <input type="number" id="groundSpeed" class="form-control" value="280" min="100" max="600" step="10" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label data-i18n="todCalculator.descentAngle">Descent Angle (degrees)</label>
+                                        <div class="radio-group">
+                                            <label>
+                                                <input type="radio" name="descentAngle" value="3" checked>
+                                                <span data-i18n="todCalculator.standard">3° (Standard)</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="descentAngle" value="2.5">
+                                                <span data-i18n="todCalculator.shallow">2.5° (Shallow)</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="descentAngle" value="3.5">
+                                                <span data-i18n="todCalculator.steep">3.5° (Steep)</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="descentAngle" value="custom">
+                                                <span data-i18n="todCalculator.custom">Custom</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group" id="customAngleGroup" style="display: none;">
+                                        <label for="customAngle" data-i18n="todCalculator.customAngle">Custom Angle (degrees)</label>
+                                        <input type="number" id="customAngle" class="form-control" value="3" min="1" max="6" step="0.1">
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="button" id="calculateButton" class="btn" data-i18n="todCalculator.calculateButton">Calculate</button>
+                                        <button type="reset" id="resetButton" class="btn btn-secondary" data-i18n="todCalculator.resetButton">Reset</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-6 animate-slide-right">
+                        <div class="card" id="resultsCard" style="display: none;">
+                            <div class="card-header">
+                                <i class="fas fa-chart-line"></i>
+                                <h2 data-i18n="todCalculator.resultsTitle">Results</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="results-container">
+                                    <div class="result-item">
+                                        <div class="result-label" data-i18n="todCalculator.todDistance">Distance to TOD</div>
+                                        <div class="result-value" id="todDistance">-- NM</div>
+                                    </div>
+                                    
+                                    <div class="result-item">
+                                        <div class="result-label" data-i18n="todCalculator.todTime">Time to TOD</div>
+                                        <div class="result-value" id="todTime">-- min</div>
+                                    </div>
+                                    
+                                    <div class="result-item">
+                                        <div class="result-label" data-i18n="todCalculator.calculatedDescentRate">Descent Rate</div>
+                                        <div class="result-value" id="descentRate">-- ft/min</div>
+                                    </div>
+                                    
+                                    <div class="result-item">
+                                        <div class="result-label" data-i18n="todCalculator.descentTime">Descent Time</div>
+                                        <div class="result-value" id="descentTime">-- min</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="descent-visualization">
+                                    <div class="descent-profile">
+                                        <div class="cruise-altitude" id="visualCruiseAltitude">FL360</div>
+                                        <div class="descent-path">
+                                            <div class="descent-angle-indicator" id="descentAngleIndicator"></div>
+                                        </div>
+                                        <div class="target-altitude" id="visualTargetAltitude">10,000 ft</div>
+                                    </div>
+                                    <div class="distance-marker">
+                                        <div class="tod-marker" id="todMarker">TOD</div>
+                                        <div class="distance-line"></div>
+                                        <div class="target-marker">Target</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mt-3 animate-slide-up">
+                            <div class="card-header">
+                                <i class="fas fa-info-circle"></i>
+                                <h2 data-i18n="todCalculator.howToUseTitle">How to Use This Calculator</h2>
+                            </div>
+                            <div class="card-body">
+                                <p data-i18n="todCalculator.howToUseDescription">
+                                    Enter your current cruise altitude, target altitude (typically pattern altitude or initial approach fix altitude), ground speed, and preferred descent rate. The calculator will determine the optimal point to begin your descent.
+                                </p>
+                                
+                                <h3 class="mt-3" data-i18n="todCalculator.rulesOfThumbTitle">Rules of Thumb</h3>
+                                <ul>
+                                    <li data-i18n="todCalculator.ruleOfThumb1">3° Descent: Multiply altitude to lose (in thousands of feet) by 3 to get distance in nautical miles</li>
+                                    <li data-i18n="todCalculator.ruleOfThumb2">Descent Rate: Multiply ground speed by 5 for a 3° descent (e.g., 250 knots × 5 = 1,250 ft/min)</li>
+                                    <li data-i18n="todCalculator.ruleOfThumb3">Time-Based: Plan for 3 minutes of descent time per 1,000 feet of altitude to lose</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Language Selector Modal -->
+    <div class="modal" id="languageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="language.selectLanguage">Select Language</h2>
+                <button class="modal-close" id="closeLanguageModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="language-options">
+                    <button class="language-option" data-lang="en">
+                        <span class="language-flag">🇺🇸</span>
+                        <span class="language-name">English</span>
+                    </button>
+                    <button class="language-option" data-lang="pt-br">
+                        <span class="language-flag">🇧🇷</span>
+                        <span class="language-name">Português (Brasil)</span>
+                    </button>
+                    <button class="language-option" data-lang="pt">
+                        <span class="language-flag">🇵🇹</span>
+                        <span class="language-name">Português</span>
+                    </button>
+                    <button class="language-option" data-lang="es">
+                        <span class="language-flag">🇪🇸</span>
+                        <span class="language-name">Español</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Additional CSS for TOD Calculator -->
+    <style>
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .radio-group input {
+            margin-right: 0.5rem;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+        
+        .results-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .result-item {
+            text-align: center;
+        }
+        
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        
+        .descent-visualization {
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            background-color: var(--bg-tertiary);
+        }
+        
+        .descent-profile {
+            display: flex;
+            flex-direction: column;
+            height: 150px;
+            position: relative;
+        }
+        
+        .cruise-altitude, .target-altitude {
+            position: absolute;
+            font-weight: 500;
+        }
+        
+        .cruise-altitude {
+            top: 0;
+            left: 0;
+        }
+        
+        .target-altitude {
+            bottom: 0;
+            right: 0;
+        }
+        
+        .descent-path {
+            flex: 1;
+            position: relative;
+        }
+        
+        .descent-angle-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-top: 2px solid var(--accent-color);
+            transform-origin: top left;
+            transform: rotate(3deg);
+        }
+        
+        .distance-marker {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+            position: relative;
+        }
+        
+        .tod-marker, .target-marker {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            position: absolute;
+        }
+        
+        .tod-marker {
+            left: 0;
+            transform: translateX(-50%);
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+        
+        .target-marker {
+            right: 0;
+            transform: translateX(50%);
+        }
+        
+        .distance-line {
+            flex: 1;
+            height: 2px;
+            background-color: var(--border-color);
+            position: relative;
+        }
+        
+        .distance-line::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .distance-line::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 6px;
+            height: 6px;
+            background-color: var(--border-color);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+    </style>
+    
+    <!-- Scripts -->
+    <script src="js/theme.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/calculators/tod-calculator.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Information - QuickBrief</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-plane"></i>
+                    <span>QuickBrief</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="sidebar-menu-item">
+                    <i class="fas fa-home"></i>
+                    <span data-i18n="nav.home">Home</span>
+                </a>
+                <a href="briefing-extractor.html" class="sidebar-menu-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span data-i18n="nav.briefingExtractor">Briefing Extractor</span>
+                </a>
+                <a href="weather.html" class="sidebar-menu-item active">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span data-i18n="nav.weather">Weather</span>
+                </a>
+                <a href="tod-calculator.html" class="sidebar-menu-item">
+                    <i class="fas fa-plane-arrival"></i>
+                    <span data-i18n="nav.todCalculator">TOD Calculator</span>
+                </a>
+                <a href="wind-calculator.html" class="sidebar-menu-item">
+                    <i class="fas fa-wind"></i>
+                    <span data-i18n="nav.windCalculator">Wind Calculator</span>
+                </a>
+                <a href="fuel-calculator.html" class="sidebar-menu-item">
+                    <i class="fas fa-gas-pump"></i>
+                    <span data-i18n="nav.fuelCalculator">Fuel Calculator</span>
+                </a>
+                <a href="about.html" class="sidebar-menu-item">
+                    <i class="fas fa-info-circle"></i>
+                    <span data-i18n="nav.about">About</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="language-selector" id="languageSelector">
+                    <i class="fas fa-globe"></i>
+                    <span id="currentLanguage">EN</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title" data-i18n="weather.title">Weather Information</h1>
+                <div class="main-header-actions">
+                    <a href="https://github.com/samuelffer" target="_blank" class="github-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </header>
+            
+            <div class="content-area animate-fade-in">
+                <!-- Search Section -->
+                <div class="card animate-slide-up">
+                    <div class="card-header">
+                        <i class="fas fa-search"></i>
+                        <h2 data-i18n="weather.searchTitle">Search Airport</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input type="text" id="icaoInput" class="form-control" placeholder="Enter ICAO code (e.g., KJFK)" data-i18n-placeholder="weather.searchPlaceholder">
+                        </div>
+                        <div class="text-right">
+                            <button id="searchButton" class="btn" data-i18n="weather.searchButton">Get Weather</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loading Indicator -->
+                <div id="loadingContainer" class="loading-container hidden">
+                    <div class="loading-spinner"></div>
+                    <p data-i18n="weather.loading">Loading weather data...</p>
+                </div>
+                
+                <!-- Results Section -->
+                <div id="resultsContainer" class="hidden">
+                    <div class="row">
+                        <!-- METAR Section -->
+                        <div class="col-6 animate-slide-left">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-cloud"></i>
+                                    <h2 data-i18n="weather.metarTitle">METAR</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <h3 data-i18n="weather.rawMetar">Raw METAR</h3>
+                                        <div class="code-block" id="rawMetar"></div>
+                                    </div>
+                                    <div>
+                                        <h3 data-i18n="weather.decodedMetar">Decoded METAR</h3>
+                                        <div id="decodedMetar">
+                                            <table class="info-table">
+                                                <tbody id="metarTable">
+                                                    <!-- METAR data will be inserted here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- TAF Section -->
+                        <div class="col-6 animate-slide-right">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-cloud-sun-rain"></i>
+                                    <h2 data-i18n="weather.tafTitle">TAF</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <h3 data-i18n="weather.rawTaf">Raw TAF</h3>
+                                        <div class="code-block" id="rawTaf"></div>
+                                    </div>
+                                    <div>
+                                        <h3 data-i18n="weather.decodedTaf">Decoded TAF</h3>
+                                        <div id="decodedTaf">
+                                            <table class="info-table">
+                                                <tbody id="tafTable">
+                                                    <!-- TAF data will be inserted here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <!-- Runway Information -->
+                        <div class="col-4 animate-slide-up" style="animation-delay: 0.1s;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-road"></i>
+                                    <h2 data-i18n="weather.runwayTitle">Runway Information</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div id="runwayInfo">
+                                        <h3 data-i18n="weather.activeRunways">Active Runways</h3>
+                                        <div id="activeRunways">
+                                            <!-- Active runways will be inserted here -->
+                                        </div>
+                                        <table class="info-table mt-3">
+                                            <tbody id="runwayTable">
+                                                <!-- Runway data will be inserted here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Wind Information -->
+                        <div class="col-4 animate-slide-up" style="animation-delay: 0.2s;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-wind"></i>
+                                    <h2 data-i18n="weather.windTitle">Wind Information</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div id="windInfo">
+                                        <div class="wind-display">
+                                            <div class="wind-direction-indicator">
+                                                <div class="wind-arrow" id="windArrow"></div>
+                                            </div>
+                                            <div class="wind-data">
+                                                <div class="wind-speed" id="windSpeed">-- kts</div>
+                                                <div class="wind-direction" id="windDirection">---°</div>
+                                            </div>
+                                        </div>
+                                        <table class="info-table mt-3">
+                                            <tbody id="windTable">
+                                                <!-- Wind data will be inserted here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Station Information -->
+                        <div class="col-4 animate-slide-up" style="animation-delay: 0.3s;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-info-circle"></i>
+                                    <h2 data-i18n="weather.stationTitle">Station Information</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div id="stationInfo">
+                                        <table class="info-table">
+                                            <tbody id="stationTable">
+                                                <!-- Station data will be inserted here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Error Message -->
+                <div id="errorContainer" class="error-container hidden">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p id="errorMessage" data-i18n="weather.error">Error fetching weather data. Please try again.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Language Selector Modal -->
+    <div class="modal" id="languageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="language.selectLanguage">Select Language</h2>
+                <button class="modal-close" id="closeLanguageModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="language-options">
+                    <button class="language-option" data-lang="en">
+                        <span class="language-flag">🇺🇸</span>
+                        <span class="language-name">English</span>
+                    </button>
+                    <button class="language-option" data-lang="pt-br">
+                        <span class="language-flag">🇧🇷</span>
+                        <span class="language-name">Português (Brasil)</span>
+                    </button>
+                    <button class="language-option" data-lang="pt">
+                        <span class="language-flag">🇵🇹</span>
+                        <span class="language-name">Português</span>
+                    </button>
+                    <button class="language-option" data-lang="es">
+                        <span class="language-flag">🇪🇸</span>
+                        <span class="language-name">Español</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Additional CSS for Weather Page -->
+    <style>
+        .code-block {
+            background-color: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: var(--border-radius-sm);
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .info-table tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .info-table tr:last-child {
+            border-bottom: none;
+        }
+        
+        .info-table td {
+            padding: 0.5rem 0;
+        }
+        
+        .info-table td:first-child {
+            font-weight: 500;
+            color: var(--text-secondary);
+            width: 40%;
+        }
+        
+        .info-table td:last-child {
+            text-align: right;
+        }
+        
+        .wind-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .wind-direction-indicator {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            position: relative;
+            margin-right: 1.5rem;
+            background-color: var(--bg-tertiary);
+        }
+        
+        .wind-direction-indicator::before {
+            content: 'N';
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .wind-direction-indicator::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+        }
+        
+        .wind-arrow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 40px;
+            background-color: var(--accent-color);
+            transform: translate(-50%, -50%) rotate(0deg);
+            transform-origin: center bottom;
+            transition: transform 0.5s ease;
+        }
+        
+        .wind-arrow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 12px solid var(--accent-color);
+        }
+        
+        .wind-data {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .wind-speed {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .wind-direction {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+        
+        .runway-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            margin: 0.25rem;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+        }
+        
+        .error-container {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius-md);
+            margin-top: 1rem;
+        }
+        
+        .error-container i {
+            font-size: 2rem;
+            color: var(--danger-color);
+            margin-bottom: 1rem;
+        }
+        
+        .mt-3 {
+            margin-top: 1rem;
+        }
+    </style>
+    
+    <!-- Scripts -->
+    <script src="js/theme.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

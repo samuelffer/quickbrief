@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBrief - Tools for Virtual Pilots</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-plane"></i>
+                    <span>QuickBrief</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="sidebar-menu-item active">
+                    <i class="fas fa-home"></i>
+                    <span data-i18n="nav.home">Home</span>
+                </a>
+                <a href="briefing-extractor.html" class="sidebar-menu-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span data-i18n="nav.briefingExtractor">Briefing Extractor</span>
+                </a>
+                <a href="weather.html" class="sidebar-menu-item">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span data-i18n="nav.weather">Weather</span>
+                </a>
+                <a href="tod-calculator.html" class="sidebar-menu-item">
+                    <i class="fas fa-plane-arrival"></i>
+                    <span data-i18n="nav.todCalculator">TOD Calculator</span>
+                </a>
+                <a href="wind-calculator.html" class="sidebar-menu-item">
+                    <i class="fas fa-wind"></i>
+                    <span data-i18n="nav.windCalculator">Wind Calculator</span>
+                </a>
+                <a href="fuel-calculator.html" class="sidebar-menu-item">
+                    <i class="fas fa-gas-pump"></i>
+                    <span data-i18n="nav.fuelCalculator">Fuel Calculator</span>
+                </a>
+                <a href="about.html" class="sidebar-menu-item">
+                    <i class="fas fa-info-circle"></i>
+                    <span data-i18n="nav.about">About</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="language-selector" id="languageSelector">
+                    <i class="fas fa-globe"></i>
+                    <span id="currentLanguage">EN</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title" data-i18n="home.title">Welcome to QuickBrief</h1>
+                <div class="main-header-actions">
+                    <a href="https://github.com/samuelffer" target="_blank" class="github-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </header>
+            
+            <div class="content-area animate-fade-in">
+                <div class="row">
+                    <div class="col-6 animate-slide-left">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-info-circle"></i>
+                                <h2 data-i18n="home.aboutTitle">About QuickBrief</h2>
+                            </div>
+                            <div class="card-body">
+                                <p data-i18n="home.aboutDescription">
+                                    QuickBrief is a comprehensive toolkit for virtual pilots, providing essential tools and calculators to enhance your flight simulation experience. From extracting key information from SimBrief briefings to calculating optimal descent points, QuickBrief helps you plan and execute your virtual flights with precision.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-6 animate-slide-right">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-tools"></i>
+                                <h2 data-i18n="home.featuresTitle">Features</h2>
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    <li data-i18n="home.feature1">SimBrief Briefing Extractor</li>
+                                    <li data-i18n="home.feature2">Real-time METAR and Weather Information</li>
+                                    <li data-i18n="home.feature3">Top of Descent Calculator</li>
+                                    <li data-i18n="home.feature4">Wind Correction Calculator</li>
+                                    <li data-i18n="home.feature5">Fuel Planning Calculator</li>
+                                    <li data-i18n="home.feature6">Multi-language Support</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="section-title mb-3 animate-slide-up" data-i18n="home.toolsTitle">Available Tools</h2>
+                
+                <div class="row">
+                    <div class="col-4 animate-slide-up">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-file-alt"></i>
+                                <h2 data-i18n="home.briefingExtractorTitle">Briefing Extractor</h2>
+                            </div>
+                            <div class="card-body">
+                                <p data-i18n="home.briefingExtractorDescription">
+                                    Extract essential information from your SimBrief operational flight plan. Get key flight data like fuel, weights, times, and more in a clean, organized format.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="briefing-extractor.html" class="btn" data-i18n="home.openTool">Open Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-4 animate-slide-up" style="animation-delay: 0.1s;">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-cloud-sun"></i>
+                                <h2 data-i18n="home.weatherTitle">Weather</h2>
+                            </div>
+                            <div class="card-body">
+                                <p data-i18n="home.weatherDescription">
+                                    Get real-time METAR, TAF, and runway information for any airport worldwide. Access current weather conditions, wind data, and active runways.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="weather.html" class="btn" data-i18n="home.openTool">Open Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-4 animate-slide-up" style="animation-delay: 0.2s;">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-plane-arrival"></i>
+                                <h2 data-i18n="home.todCalculatorTitle">TOD Calculator</h2>
+                            </div>
+                            <div class="card-body">
+                                <p data-i18n="home.todCalculatorDescription">
+                                    Calculate your optimal top of descent point to plan a smooth, efficient descent to your destination. Determine when to begin your descent based on altitude, speed, and angle.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="tod-calculator.html" class="btn" data-i18n="home.openTool">Open Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-4 animate-slide-up" style="animation-delay: 0.3s;">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-wind"></i>
+                                <h2 data-i18n="home.windCalculatorTitle">Wind Calculator</h2>
+                            </div>
+                            <div class="card-body">
+                                <p data-i18n="home.windCalculatorDescription">
+                                    Calculate wind correction angles, ground speed, and headings. Account for crosswinds in your flight planning and determine the optimal heading to maintain your desired course.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="wind-calculator.html" class="btn" data-i18n="home.openTool">Open Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-4 animate-slide-up" style="animation-delay: 0.4s;">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-gas-pump"></i>
+                                <h2 data-i18n="home.fuelCalculatorTitle">Fuel Calculator</h2>
+                            </div>
+                            <div class="card-body">
+                                <p data-i18n="home.fuelCalculatorDescription">
+                                    Estimate fuel requirements for your flight. Calculate trip fuel, reserves, and total fuel needed based on distance, aircraft type, and flight conditions.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="fuel-calculator.html" class="btn" data-i18n="home.openTool">Open Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-4 animate-slide-up" style="animation-delay: 0.5s;">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-info-circle"></i>
+                                <h2 data-i18n="home.aboutToolTitle">About</h2>
+                            </div>
+                            <div class="card-body">
+                                <p data-i18n="home.aboutToolDescription">
+                                    Learn more about QuickBrief, its features, and how to use the tools. Find documentation, tips, and contact information.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="about.html" class="btn" data-i18n="home.openTool">Open Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Language Selector Modal -->
+    <div class="modal" id="languageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="language.selectLanguage">Select Language</h2>
+                <button class="modal-close" id="closeLanguageModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="language-options">
+                    <button class="language-option" data-lang="en">
+                        <span class="language-flag">🇺🇸</span>
+                        <span class="language-name">English</span>
+                    </button>
+                    <button class="language-option" data-lang="pt-br">
+                        <span class="language-flag">🇧🇷</span>
+                        <span class="language-name">Português (Brasil)</span>
+                    </button>
+                    <button class="language-option" data-lang="pt">
+                        <span class="language-flag">🇵🇹</span>
+                        <span class="language-name">Português</span>
+                    </button>
+                    <button class="language-option" data-lang="es">
+                        <span class="language-flag">🇪🇸</span>
+                        <span class="language-name">Español</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="js/theme.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
